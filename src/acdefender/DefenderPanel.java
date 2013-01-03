@@ -19,14 +19,17 @@ import javax.swing.Timer;
  */
 public class DefenderPanel extends JPanel implements Runnable, ConstantesDefender {
 
-    
     Thread t;           // Thread principal
+    //--------------------LES MONSTRES-----------------------
     Monstre monstre;    // Une instance de la classe Monstre
     private int delay;  // Delai pour l'exécution de la tâche qui fait apparaître les Monstres
     Graphics graph;     // Contexte graphique
     TaskPerformer taskPerformer; // Un ActionListener permettant l'apparition des monstres
     ArrayList<Monstre> listeMonstres = new ArrayList<Monstre>(); // Une liste contenant des monstres
-
+    //-------------------LA BULLET----------------------------
+    Bullet bullet = new Bullet() ; // Une instance de la classe Bullet
+    
+    
     public DefenderPanel() {
         this.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         taskPerformer = new TaskPerformer();
@@ -39,6 +42,10 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
         g.setColor(Color.white);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         graph = g;
+        
+        // Dessine la bullet
+        bullet.drawBullet(g, bullet.getPosXBullet(), bullet.getPosYBullet());
+        
         // Boucle permettant de dessiner les monstres de la liste
         for (int i = 0; i < listeMonstres.size(); ++i) {
             int posX = listeMonstres.get(i).getPosXMonstres();
@@ -49,7 +56,7 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
             listeMonstres.get(i).run();
         }
         
-        // Après avoir placer tous les monstres on repeint la fenêtre
+        // Après avoir placé tous les monstres on repeint la fenêtre
         repaint();
 
         if(DEBUG){
@@ -76,12 +83,6 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
             listeMonstres.add(monstre);
             new Thread (monstre).start();
             
-//            try {
-//                Thread.sleep(1); // Pour poser le programme
-//            } catch (InterruptedException ie) {
-//                System.err.println("Erreur: Thread.sleep(5) du actionPerformed"+
-//                                   " --> TaskPerformer");
-//            }
         }
     } // fin classe TaskPerformer
     
