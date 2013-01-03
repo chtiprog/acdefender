@@ -9,6 +9,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -27,14 +30,20 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
     TaskPerformer taskPerformer; // Un ActionListener permettant l'apparition des monstres
     ArrayList<Monstre> listeMonstres = new ArrayList<Monstre>(); // Une liste contenant des monstres
     //-------------------LA BULLET----------------------------
-    Bullet bullet = new Bullet() ; // Une instance de la classe Bullet
-    
+    Bullet bullet ; // Une instance de la classe Bullet
+    private int XClic ; // Coordonnées x du clic de souris
+    private int YClic ; // Coordonnées y du clic de souris
+    private float a ;   // Coefficient directeur de la droit y = ax+b que forme la bullet jusqu'au clic
+    private int b ;     // L'ordonnée à l'origine de la droit y = ax+b que forme la bullet jusqu'au clic
     
     public DefenderPanel() {
         this.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        this.addMouseListener(new ClickListener());
+        bullet = new Bullet();
         taskPerformer = new TaskPerformer();
         t = new Thread(this);
         t.start();
+        
     } // fin constructeur
 
     @Override
@@ -68,6 +77,7 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
     public void run() {
         delay = 1000;
         new Timer(delay, taskPerformer).start();
+        
     }
 
     
@@ -85,6 +95,35 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
             
         }
     } // fin classe TaskPerformer
+    
+    /**
+     * Permet de réagit aux clics de souris pour tirer avec la Bullet
+     */
+    public class ClickListener extends MouseAdapter {
+        
+        public void mousePressed(MouseEvent e){
+            
+            // Informe la bullet du clic effectué pour lui permettre de lancer sa méthode goBullet()
+            bullet.setIsClick(true);
+            // Récupère les coordonnées où on a cliqué
+            XClic = e.getX() ; YClic = e.getY() ;
+            // Calcul du coefficient directeur a = (y2 - y1) / (x2 - x1)
+            a = (float) (YClic - Y_DEPART_BULLET) / (XClic - X_DEPART_BULLET) ;
+            // b l'ordonnée à l'origine, donc coordonnées de départ (y pour x = 0)
+            b = Y_DEPART_BULLET ;
+            // Envoie les nouvelles coordonnées à la bullet
+            bullet.setA(a); bullet.setB(b);
+            
+            if(DEBUG) {
+                System.out.println("a = " + a + " b = " + b) ; // DEBUG
+            }
+            
+            // lancement d'un nouveau thread
+            new Thread (bullet).start();
+            
+        } // fin méthode mousePressed
+        
+    } // fin classe ClickListener
     
     
 } // fin classe DefenderPanel
