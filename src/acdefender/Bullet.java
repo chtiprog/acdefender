@@ -17,11 +17,17 @@ public class Bullet implements Runnable, ConstantesDefender {
     private int posYDepartBullet = Y_DEPART_BULLET ;
     private int posXBullet ;
     private int posYBullet ;
+    private volatile boolean isClick ;
+    private float a ;   // Coefficient directeur de la droit y = ax+b que forme la bullet jusqu'au clic
+    private int b ;     // L'ordonnée à l'origine de la droit y = ax+b que forme la bullet jusqu'au clic
     
     public Bullet(){
         posXBullet = posXDepartBullet ;
         posYBullet = posYDepartBullet ;
+        isClick = false ;
     } // fin constructeur
+
+    
     
     /**
      * Dessine la Bullet
@@ -44,7 +50,34 @@ public class Bullet implements Runnable, ConstantesDefender {
     @Override
     public void run() {
         
+        if(DEBUG){
+                    System.out.println("Je suis dans la méthode run de Bullet") ; // DEBUG
+                }
+        
+        while(isClick){
+            // Réinitialise la position de départ de la bullet
+            posXBullet = X_DEPART_BULLET ; posYBullet = Y_DEPART_BULLET ;
+            for(int i = 0 ; i < FRAME_WIDTH ; ++i){
+                ++posXBullet ;
+                posYBullet = (int) ((a*posXBullet) + b) ; // y = ax+b
+                
+                if(DEBUG){
+                    System.out.println("Je suis dans la méthode run de Bullet") ;
+                    System.out.println("xBullet = " + posXBullet + " yBullet = " + posYBullet ); // DEBUG
+                }
+                
+                
+            } // fin for
+            isClick = false ;
+            
+            
+            
+        } // fin while
+        
     } // fin méthode run
+    
+    
+    
     
     //--------------------------------------------------------------------------
     //                      GETTERS AND SETTERS
@@ -64,6 +97,18 @@ public class Bullet implements Runnable, ConstantesDefender {
 
     public void setPosYBullet(int posYBullet) {
         this.posYBullet = posYBullet;
+    }
+
+    public void setIsClick(boolean isClick) {
+        this.isClick = isClick;
+    }
+
+    public void setA(float a) {
+        this.a = a;
+    }
+
+    public void setB(int b) {
+        this.b = b;
     }
 
     
