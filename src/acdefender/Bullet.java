@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 /**
- *
+ * Classe Bullet qui permet de tirer avec une balle sur des monstres
  * @author ankat
  */
 public class Bullet implements Runnable, ConstantesDefender {
@@ -40,13 +40,15 @@ public class Bullet implements Runnable, ConstantesDefender {
         if(DEBUG){
             System.out.println("x == " + x + "... y == " + y); // DEBUG
         }
-        g.setColor(Color.BLUE);
+        g.setColor(COULEUR_BULLET);
         g.fillOval(x, y, TAILLE_BULLET, TAILLE_BULLET);
         
         
     } // fin méthode drawBullet
     
-    
+    /**
+     * Permet de faire avancer la Bullet
+     */
     @Override
     public void run() {
         

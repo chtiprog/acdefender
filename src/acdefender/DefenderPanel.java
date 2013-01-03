@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -36,6 +37,11 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
     private float a ;   // Coefficient directeur de la droit y = ax+b que forme la bullet jusqu'au clic
     private int b ;     // L'ordonnée à l'origine de la droit y = ax+b que forme la bullet jusqu'au clic
     
+    // Pour dessiner une tourelle fixe
+    private final ImageIcon imageTourelle = new ImageIcon(getClass().getResource("/tourelle100*90.jpeg"));
+    
+    
+    
     public DefenderPanel() {
         this.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         this.addMouseListener(new ClickListener());
@@ -54,6 +60,9 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
         
         // Dessine la bullet
         bullet.drawBullet(g, bullet.getPosXBullet(), bullet.getPosYBullet());
+        
+        // Dessine la tourelle fixe
+        g.drawImage(imageTourelle.getImage(), 0, Y_DEPART_BULLET, null);
         
         // Boucle permettant de dessiner les monstres de la liste
         for (int i = 0; i < listeMonstres.size(); ++i) {
@@ -79,7 +88,18 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
         new Timer(delay, taskPerformer).start();
         
     }
+    
+    //--------------------------------------------------------------------------
+    //                      AUTRES METHODES DE CLASSE
+    //--------------------------------------------------------------------------
+    
+    
+    
 
+    //-----------------------------------------------------------------------------
+    //                      CLASSES INTERNES
+    //-----------------------------------------------------------------------------
+    
     
     /**
      * Tâche qui permet de faire apparaître des monstres en créant des nouveaux

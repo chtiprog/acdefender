@@ -9,7 +9,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 /**
- *
+ * Classe permettant de créer et de faire avancer des monstres
  * @author ankat
  */
 public class Monstre implements Runnable, ConstantesDefender {
@@ -29,12 +29,12 @@ public class Monstre implements Runnable, ConstantesDefender {
      * Image du Monstre
      */
     //private final ImageIcon imageMonstres = new ImageIcon(getClass().getResource("/Monstre60*96.png")) ;
-    private final ImageIcon imageMonstres = new ImageIcon(getClass().getResource("/Tux86x100.svg.png"));
+    private final ImageIcon imageMonstres = new ImageIcon(getClass().getResource("/Tux86x100.svg.png")) ;
     
     
     public Monstre(){
-        posXMonstres = 800 ;
-        posYMonstres = random.nextInt(550);
+        posXMonstres = FRAME_WIDTH ;
+        posYMonstres = random.nextInt(FRAME_HEIGHT - 100);
     } // fin constructeur
    
     
@@ -48,6 +48,7 @@ public class Monstre implements Runnable, ConstantesDefender {
         if(DEBUG){
             System.out.println("x == " + x + "... y == " + y); // DEBUG
         }
+       // g.drawImage(imageMonstres.getImage(), x, y, null);
         g.drawImage(imageMonstres.getImage(), x, y, null);
     }
     
