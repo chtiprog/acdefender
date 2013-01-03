@@ -63,7 +63,7 @@ public class Bullet implements Runnable, ConstantesDefender {
                 posYBullet = (int) ((a*posXBullet) + b) ; // y = ax+b
                 
                 try {
-                Thread.sleep(5); // Pour poser le programme
+                Thread.sleep(5); // Pour ralentir la bullet
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }	
