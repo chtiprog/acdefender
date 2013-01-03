@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
- * Panneau du jeu qui est aussi le contrôleur
+ * Panneau du jeu qui est aussi le contrôleur 
  * @author ankat
  */
 public class DefenderPanel extends JPanel implements Runnable, ConstantesDefender {
