@@ -11,24 +11,22 @@ import javax.swing.JFrame;
  *
  * @author ankat
  */
-public class DefenderFrame extends JFrame {
+public class DefenderFrame extends JFrame implements ConstantesDefender {
     // constantes de la fenêtre :
-    static final int FRAME_WIDTH = 800 ;
-    static final int FRAME_HEIGHT = 600 ;
-    private static String titre = "AC DEFENDER" ;
+    private int frame_Width = FRAME_WIDTH ;
+    private int frame_Height =  FRAME_HEIGHT ;
+    private String titre = TITRE ;
     
     // variables d'instances des objects du jeu :
     
     
     // le panneau :
-    private DefenderPanel defenderPan ;
+    private DefenderPanel defenderPan = new DefenderPanel();
     
     public DefenderFrame() {
         init() ; // initialise les objects
         
         // composants graphiques :
-        defenderPan = new DefenderPanel();
-        defenderPan.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         this.setContentPane(defenderPan);
         
         
