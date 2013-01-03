@@ -13,11 +13,11 @@ import java.awt.Graphics;
  */
 public class Bullet implements Runnable, ConstantesDefender {
     
-    private int posXDepartBullet = X_DEPART_BULLET ;
-    private int posYDepartBullet = Y_DEPART_BULLET ;
-    private int posXBullet ;
-    private int posYBullet ;
-    private volatile boolean isClick ;
+    private int posXDepartBullet = X_DEPART_BULLET ; // Position x de départ de la bullet
+    private int posYDepartBullet = Y_DEPART_BULLET ; // Position y de départ de la bullet
+    private int posXBullet ; // Position x de la Bullet en cours de tir
+    private int posYBullet ; // Position y de la Bullet en cours de tir
+    private volatile boolean isClick ; // Permet de savoir si un clic de souris a eu lieu
     private float a ;   // Coefficient directeur de la droit y = ax+b que forme la bullet jusqu'au clic
     private int b ;     // L'ordonnée à l'origine de la droit y = ax+b que forme la bullet jusqu'au clic
     
@@ -57,9 +57,16 @@ public class Bullet implements Runnable, ConstantesDefender {
         while(isClick){
             // Réinitialise la position de départ de la bullet
             posXBullet = X_DEPART_BULLET ; posYBullet = Y_DEPART_BULLET ;
+            
             for(int i = 0 ; i < FRAME_WIDTH ; ++i){
                 ++posXBullet ;
                 posYBullet = (int) ((a*posXBullet) + b) ; // y = ax+b
+                
+                try {
+                Thread.sleep(5); // Pour poser le programme
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }	
                 
                 if(DEBUG){
                     System.out.println("Je suis dans la méthode run de Bullet") ;
@@ -69,9 +76,7 @@ public class Bullet implements Runnable, ConstantesDefender {
                 
             } // fin for
             isClick = false ;
-            
-            
-            
+   
         } // fin while
         
     } // fin méthode run
