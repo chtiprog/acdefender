@@ -52,7 +52,6 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
     ArrayList<Monstre> listeMonstres = new ArrayList<Monstre>();
     
     public DefenderPanel(){
- //       this.setBackground(Color.red);
         this.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         taskPerformer = new TaskPerformer() ;
         t = new Thread(this);
@@ -63,13 +62,16 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
         g.setColor(Color.white);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         graph = g ;
-        for(Monstre m : listeMonstres) m.drawMonstres(g, xMonstre, yMonstre);
-       
-  //      monstre = new Monstre() ;
-  //      monstre.drawMonstres(g, 500, 200);
+        // Boucle permettant de dessiner les monstres de la liste
+        for (int i = 0 ; i  < listeMonstres.size() ; ++i){
+            int posX = listeMonstres.get(i).getPosXMonstres() ;
+            int posY = listeMonstres.get(i).getPosYMonstres() ;
+            listeMonstres.get(i).drawMonstres(g, posX, posY)  ;
+        }
+
         
- 
-    }
+        System.out.println("taille listeMonstres : " + listeMonstres.size()); // DEBUG
+    } // fin méthode paintComponent
     
  /*   public void goMonstres(){
         xMonstre = monstre.getPosXMonstres() ;
@@ -98,13 +100,15 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
         
     }
     
-    
+    /**
+     * Tâche qui permet de faire apparaître des monstres
+     * en créant des nouveaux monstres et en les ajoutant à la liste
+     */
     public class TaskPerformer implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
             monstre = new Monstre();
-            xMonstre = monstre.getPosXMonstres() ; yMonstre = monstre.getPosYMonstres() ;
             listeMonstres.add(monstre) ;
             repaint() ;
             try {
