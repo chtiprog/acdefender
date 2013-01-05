@@ -70,8 +70,14 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
 
             // Move monster for next place
             listeMonstres.get(i).run();
+            
+            // Test collision
+            if ( (bullet.getPosXBullet() >= listeMonstres.get(i).getPosXMonstres() && bullet.getPosXBullet() <= (listeMonstres.get(i).getPosXMonstres() + 86) )
+                        && (bullet.getPosYBullet() >= listeMonstres.get(i).getPosYMonstres() && bullet.getPosYBullet() <= (listeMonstres.get(i).getPosYMonstres() + 100) ) ) {
+                    listeMonstres.remove(i);
+            }
         }
-
+        
         // Après avoir placé tous les monstres on repeint la fenêtre
         repaint();
 
@@ -84,7 +90,7 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
     public void run() {
         delay = 1500;
         new Timer(delay, taskPerformer).start();
-        colision();
+//        colision();
     }
 
     //--------------------------------------------------------------------------
@@ -101,8 +107,8 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
 
             } // fin for
             
- //           if(DEBUG){
-                System.out.println("Je suis dans colision");
+  //          if(DEBUG){
+  //              System.out.println("Je suis dans colision");
   //          }
             
         } // fin while
@@ -122,7 +128,7 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
             monstre = new Monstre();
             listeMonstres.add(monstre);
             new Thread(monstre).start();
-
+            
         }
     } // fin classe TaskPerformer
 
@@ -152,6 +158,8 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
 
             // lancement d'un nouveau thread
             new Thread(bullet).start();
+            
+            
 
         } // fin méthode mousePressed
     } // fin classe ClickListener
