@@ -41,14 +41,14 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
     // Pour dessiner une tourelle fixe
     private final ImageIcon imageTourelle = new ImageIcon(getClass().getResource("/tourelle100*90.jpeg"));
     private int vies = VIE_JOUEUR;
-    
-    private JTextField affichageVies ;
-    
+    //-------------------DIVERS--------------------------------
+    private JTextField affichageVies;
+    private boolean gameOver = false;
 
     public DefenderPanel() {
         this.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        affichageVies = new JTextField("Nombre de vies = 5") ;
-        this.add(affichageVies) ;
+        affichageVies = new JTextField("Nombre de vies = 5");
+        this.add(affichageVies);
         this.addMouseListener(new ClickListener());
         bullet = new Bullet();
         taskPerformer = new TaskPerformer();
@@ -69,8 +69,9 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
         // Dessine la tourelle fixe
         g.drawImage(imageTourelle.getImage(), 0, Y_DEPART_BULLET, null);
 
-        // Boucle permettant de dessiner les monstres de la liste
-        for (int i = 0; i < listeMonstres.size(); ++i) {
+        // GAMELOOP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        for (int i = 0; !gameOver && i < listeMonstres.size(); ++i) {
+            // Dessine les monstres
             int posX = listeMonstres.get(i).getPosXMonstres();
             int posY = listeMonstres.get(i).getPosYMonstres();
             listeMonstres.get(i).drawMonstres(g, posX, posY);
@@ -87,6 +88,9 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
                     System.out.println("x : " + listeMonstres.get(i).getPosXMonstres());
                     System.out.println("vies : " + vies);
                 }
+                if (this.vies == 0) {
+                    gameOver = true ;
+                }
             }
 
             // Test collision
@@ -97,6 +101,12 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
 
 
         } // fin boucle for
+        // FIN GAMELOOP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        if (gameOver) {
+            g.setColor(Color.red);
+            g.drawString("GAME OVER", FRAME_WIDTH / 2, FRAME_HEIGHT / 2);
+        }
 
         // Après avoir placé tous les monstres on repeint la fenêtre
         repaint();
