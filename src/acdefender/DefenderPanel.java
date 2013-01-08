@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 
 /**
@@ -39,9 +40,15 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
     private int b;     // L'ordonnée à l'origine de la droit y = ax+b que forme la bullet jusqu'au clic
     // Pour dessiner une tourelle fixe
     private final ImageIcon imageTourelle = new ImageIcon(getClass().getResource("/tourelle100*90.jpeg"));
+    private int vies = VIE_JOUEUR;
+    
+    private JTextField affichageVies ;
+    
 
     public DefenderPanel() {
         this.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        affichageVies = new JTextField("Nombre de vies = 5") ;
+        this.add(affichageVies) ;
         this.addMouseListener(new ClickListener());
         bullet = new Bullet();
         taskPerformer = new TaskPerformer();
@@ -70,14 +77,27 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
 
             // Move monster for next place
             listeMonstres.get(i).run();
-            
-            // Test collision
-            if ( (bullet.getPosXBullet() >= listeMonstres.get(i).getPosXMonstres() && bullet.getPosXBullet() <= (listeMonstres.get(i).getPosXMonstres() + 86) )
-                        && (bullet.getPosYBullet() >= listeMonstres.get(i).getPosYMonstres() && bullet.getPosYBullet() <= (listeMonstres.get(i).getPosYMonstres() + 100) ) ) {
-                    listeMonstres.remove(i);
+
+            // Test vies
+            if (listeMonstres.get(i).getPosXMonstres() <= 5) {
+                this.vies--;
+                listeMonstres.remove(i);
+                affichageVies.setText("Nombre de vies = " + this.vies);
+                if (DEBUG) {
+                    System.out.println("x : " + listeMonstres.get(i).getPosXMonstres());
+                    System.out.println("vies : " + vies);
+                }
             }
-        }
-        
+
+            // Test collision
+            if ((bullet.getPosXBullet() >= listeMonstres.get(i).getPosXMonstres() && bullet.getPosXBullet() <= (listeMonstres.get(i).getPosXMonstres() + 86))
+                    && (bullet.getPosYBullet() >= listeMonstres.get(i).getPosYMonstres() && bullet.getPosYBullet() <= (listeMonstres.get(i).getPosYMonstres() + 100))) {
+                listeMonstres.remove(i);
+            }
+
+
+        } // fin boucle for
+
         // Après avoir placé tous les monstres on repeint la fenêtre
         repaint();
 
@@ -100,17 +120,17 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
         while (true) {
             for (int i = 0; i < listeMonstres.size(); ++i) {
 
-                if ( (bullet.getPosXBullet() >= listeMonstres.get(i).getPosXMonstres() && bullet.getPosXBullet() <= (listeMonstres.get(i).getPosXMonstres() + 86) )
-                        && (bullet.getPosYBullet() >= listeMonstres.get(i).getPosYMonstres() && bullet.getPosYBullet() <= (listeMonstres.get(i).getPosYMonstres() + 100) ) ) {
+                if ((bullet.getPosXBullet() >= listeMonstres.get(i).getPosXMonstres() && bullet.getPosXBullet() <= (listeMonstres.get(i).getPosXMonstres() + 86))
+                        && (bullet.getPosYBullet() >= listeMonstres.get(i).getPosYMonstres() && bullet.getPosYBullet() <= (listeMonstres.get(i).getPosYMonstres() + 100))) {
                     listeMonstres.remove(i);
                 } // fin if
 
             } // fin for
-            
-  //          if(DEBUG){
-  //              System.out.println("Je suis dans colision");
-  //          }
-            
+
+            //          if(DEBUG){
+            //              System.out.println("Je suis dans colision");
+            //          }
+
         } // fin while
     } // fin méthode colision
 
@@ -128,7 +148,7 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
             monstre = new Monstre();
             listeMonstres.add(monstre);
             new Thread(monstre).start();
-            
+
         }
     } // fin classe TaskPerformer
 
@@ -158,9 +178,20 @@ public class DefenderPanel extends JPanel implements Runnable, ConstantesDefende
 
             // lancement d'un nouveau thread
             new Thread(bullet).start();
-            
-            
+
+
 
         } // fin méthode mousePressed
     } // fin classe ClickListener
+
+    //--------------------------------------------------------------------------
+    //                      GETTERS AND SETTERS
+    //--------------------------------------------------------------------------
+    public int getVies() {
+        return vies;
+    }
+
+    public void setVies(int vies) {
+        this.vies = vies;
+    }
 } // fin classe DefenderPanel
