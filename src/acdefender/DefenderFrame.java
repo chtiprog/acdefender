@@ -6,6 +6,7 @@ package acdefender;
 
 import java.awt.Dimension;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 /**
  *
@@ -23,9 +24,13 @@ public class DefenderFrame extends JFrame implements ConstantesDefender {
     // le panneau :
     private DefenderPanel defenderPan = new DefenderPanel();
     
+    private JTextField nbreVies = new JTextField() ;
+    
     public DefenderFrame() {
         init() ; // initialise les objects
         
+ //       nbreVies.setText("Vies : " + defenderPan.getVies());
+ //       defenderPan.add(nbreVies) ;
         // composants graphiques :
         this.setContentPane(defenderPan);
         
