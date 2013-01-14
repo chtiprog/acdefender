@@ -5,6 +5,9 @@
 package acdefender;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
@@ -24,13 +27,13 @@ public class DefenderFrame extends JFrame implements ConstantesDefender {
     // le panneau :
     private DefenderPanel defenderPan = new DefenderPanel();
     
-    private JTextField nbreVies = new JTextField() ;
+    private JButton quitter = new JButton("Quitter");
+
     
     public DefenderFrame() {
         init() ; // initialise les objects
         
- //       nbreVies.setText("Vies : " + defenderPan.getVies());
- //       defenderPan.add(nbreVies) ;
+
         // composants graphiques :
         this.setContentPane(defenderPan);
         
@@ -46,6 +49,12 @@ public class DefenderFrame extends JFrame implements ConstantesDefender {
     } // fin constructeur
 
     private void init() {
+        quitter.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent arg0) {
+        System.exit(0);
+      }     
+    });
+        defenderPan.add(quitter);
         // TODO
     } // fin méthode init()
     
